@@ -1,12 +1,13 @@
-# Simulador CDI
+# Simulador de CDI, Selic e IPCA
 
-Um simulador interativo de investimentos em CDI com interface web.
+Um simulador interativo de investimentos com interface web.
 
 ## Funcionalidades
 
-- Simula rendimento de investimentos em CDI com aportes mensais
-- Taxa CDI atualizada automaticamente via API (Brasil API)
-- Cálculo preciso com juros compostos mensais
+- Simula rendimentos com CDI, Selic ou IPCA
+- Permite editar o saldo inicial e os aportes de cada mês ao vivo
+- Atualiza as taxas automaticamente via BrasilAPI
+- Cálculo com juros compostos mensais
 
 ## Instalação
 
@@ -28,8 +29,4 @@ bun run index.ts
    - **Aporte Mensal**: Quanto você investe por mês em reais
    - **Meses**: Por quantos meses deseja simular
 3. Clique em "Simular"
-4. A tabela exibe o saldo, rendimento e aportes mês a mês
-
-## Arquivos de Dados
-
-O arquivo `simulacao_financeira.csv` é gerado a cada nova simulação.
+4. A tabela exibe o saldo do começo do mês, rendimento, aporte e o saldo final projetado

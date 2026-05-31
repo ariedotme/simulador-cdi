@@ -1,3 +1,47 @@
+export type LinhaResultado = {
+  mes: number;
+  saldo: number;
+  rendimento: number;
+  aporte: number;
+  saldoFinal: number;
+};
+
+export function calcularTaxaMensal(taxaCdi: number) {
+  return Math.pow(1 + taxaCdi / 100, 1 / 12) - 1;
+}
+
+export function simularComAportes({
+  valorInicial,
+  aportes,
+  taxaCdi,
+}: {
+  valorInicial: number;
+  aportes: number[];
+  taxaCdi: number;
+}): LinhaResultado[] {
+  const taxaMensal = calcularTaxaMensal(taxaCdi);
+  let saldoAtual = valorInicial;
+  const resultado: LinhaResultado[] = [];
+
+  for (const [indice, aporte] of aportes.entries()) {
+    const saldo = saldoAtual;
+    const rendimento = saldo * taxaMensal;
+    const saldoFinal = saldo + rendimento + aporte;
+
+    resultado.push({
+      mes: indice + 1,
+      saldo,
+      rendimento,
+      aporte,
+      saldoFinal,
+    });
+
+    saldoAtual = saldoFinal;
+  }
+
+  return resultado;
+}
+
 export function simularCDI({
   valorInicial,
   meses,
@@ -8,20 +52,10 @@ export function simularCDI({
   meses: number;
   aporteMensal: number;
   taxaCdi: number;
-}) {
-  const CDI_ANUAL = taxaCdi / 100;
-  const CDI_MENSAL = Math.pow(1 + CDI_ANUAL, 1 / 12) - 1;
-  let saldoAtual = valorInicial;
-  const resultado = [];
-  for (let mes = 1; mes <= meses; mes++) {
-    const rendimento = saldoAtual * CDI_MENSAL;
-    saldoAtual += rendimento + aporteMensal;
-    resultado.push({
-      mes,
-      saldo: saldoAtual,
-      rendimento,
-      aporte: aporteMensal,
-    });
-  }
-  return resultado;
+}): LinhaResultado[] {
+  return simularComAportes({
+    valorInicial,
+    aportes: Array.from({ length: meses }, () => aporteMensal),
+    taxaCdi,
+  });
 }
